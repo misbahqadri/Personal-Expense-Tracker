@@ -1,0 +1,6 @@
+Date,Type,Amount,Category,Description
+2025-07-24,Income,200000.0,Salary,date
+2025-07-29,Expense,500.0,Food,food
+2025-07-24,Expense,522.0,Transport,
+2025-08-07,Expense,1000.0,Bills,
+2025-07-24,Expense,2000.0,Transport,

@@ -1,0 +1,180 @@
+
+'''
+
+
+tab1, tab2, tab3,tab4 = st.tabs(["➕ Add Expense", "📊 Dashboard", "📁 All Expenses", "Months"])
+
+with tab1:
+    st.subheader("Enter a New Expense")
+    with st.form("expense_form"):
+        date = st.date_input("Date")
+        category = st.selectbox("Category", ["Food", "Travel", "Shopping", "Utilities", "Others"])
+        amount = st.number_input("Amount", min_value=0.0, step=0.01)
+        description = st.text_input("Description")
+        submitted = st.form_submit_button("Add Expense")
+        if submitted:
+            st.success("Expense Added!")
+
+with tab2:
+    st.subheader("📊 Expense Analytics")
+    st.markdown("Here you'll see charts like pie, bar, and trends")
+
+with tab3:
+    st.subheader("📁 View All Expenses")
+    st.dataframe([])  # Placeholder for now
+
+
+months = ["January", "February", "March", "April", "May", "June",
+          "July", "August", "September", "October", "November", "December"]
+# selected_month = st.sidebar.radio("📅 Tracker by Month", months)
+
+with tab4:
+    # import random
+    months_data = {
+    "January": {"Income": 7000, "Expenses": 2175, "Life Energy": 70},
+    "February": {"Income": 0, "Expenses": 0, "Life Energy": 0},
+    # ... repeat for other months
+    }
+
+    def display_card(month, data):
+        net = data["Income"] - data["Expenses"]
+        st.markdown(f"""
+        <div style="padding:15px;border:1px solid #ccc;border-radius:10px;">
+        <strong>{month}</strong><br>
+        Income: ${data['Income']}<br>
+        Expenses: ${data['Expenses']}<br>
+        Net: ${net}<br>
+        Life Energy: {data['Life Energy']} hr
+        </div>
+        """, unsafe_allow_html=True)
+
+# Layout 3x4
+    for i in range(0, 12, 4):
+        cols = st.columns(4)
+        for j in range(4):
+            m = months[i + j]
+            with cols[j]:
+                display_card(m, months_data.get(m, {"Income": 0, "Expenses": 0, "Life Energy": 0}))
+
+'''
+=================================================================
+
+
+'''
+# Sample session state init
+if "data" not in st.session_state:
+    st.session_state["data"] = []
+# Summary Columns
+with tab1:
+    st.subheader("📊 Summary")
+    col1, col2, col3 = st.columns(3)
+
+    total_income = sum(item['Amount'] for item in st.session_state["data"] if item['Type'] == "Income")
+    total_expenses = sum(item['Amount'] for item in st.session_state["data"] if item['Type'] == "Expense")
+    net_savings = total_income - total_expenses
+
+    col1.metric("Total Income", f"₹ {total_income:.2f}")
+    col2.metric("Total Expenses", f"₹ {total_expenses:.2f}")
+    col3.metric("Net Savings", f"₹ {net_savings:.2f}", delta=f"{net_savings - total_expenses:.2f}")
+
+# Add Entry Button
+# st.markdown("---")
+with tab2:
+    st.subheader("➕ Quick Add Entry")
+
+    with st.form("quick_add_form"):
+        col1, col2, col3, col4 = st.columns(4)
+        entry_type = col1.selectbox("Type", ["Income", "Expense"])
+        entry_date = col2.date_input("Date", datetime.today())
+        category = col3.selectbox("Category", ["Food", "Travel", "Rent", "Salary", "Shopping", "Other"])
+        amount = col4.number_input("Amount", min_value=0.0, step=10.0)
+        notes = st.text_input("Notes")
+        quick_submit = st.form_submit_button("Add Entry")
+
+    if quick_submit:
+        st.session_state["data"].append({
+            "Type": entry_type,
+            "Date": entry_date,
+            "Category": category,
+            "Amount": amount,
+            "Notes": notes
+        })
+        st.success("Entry added!")
+
+# Recent Transactions
+# st.markdown("---")
+with tab3:
+    st.subheader("🕒 Recent Transactions")
+    if st.session_state["data"]:
+        df = pd.DataFrame(st.session_state["data"])
+        df = df.sort_values(by="Date", ascending=False)
+        st.dataframe(df.head(10))
+    else:
+        st.info("No transactions yet. Start by adding one above.")
+
+with tab4:
+# Detailed Graphs
+    if st.session_state["data"]:
+        st.markdown("---")
+        st.subheader("📈 Detailed Insights")
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            pie_chart = px.pie(df[df["Type"] == "Expense"], names="Category", values="Amount", title="Expense Distribution")
+            st.plotly_chart(pie_chart, use_container_width=True)
+
+        with col2:
+            df_by_date = df.groupby("Date")["Amount"].sum().reset_index()
+            line_chart = px.line(df_by_date, x="Date", y="Amount", title="Daily Expense Flow")
+            st.plotly_chart(line_chart, use_container_width=True)
+
+        st.markdown("### 🔍 Category-wise Summary")
+        grouped = df.groupby(["Type", "Category"])["Amount"].sum().reset_index()
+        st.dataframe(grouped)
+    else:
+        st.info("Add data to see detailed reports.")
+
+'''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+==========================================================
+
+        # Detailed Graphs
+    if not df_data.empty:
+        # st.markdown("---")
+        st.subheader("📈 Detailed Insights")
+
+    
+        col1, col2 = st.columns(2)
+
+        with col1:
+            pie_chart = px.pie(df_data[df_data["Type"] == "Expense"], names="Category", values="Amount", title="Expense Distribution")
+            st.plotly_chart(pie_chart, use_container_width=True)
+
+        with col2:
+            bar_chart = px.bar(df_data[df_data["Type"] == "Expense"], names="Category", values="Amount", title="Expense Distribution")
+            st.plotly_chart(pie_chart, use_container_width=True)
+
+            # df_by_date = df_data.groupby("Date")["Amount"].sum().reset_index()
+            # line_chart = px.line(df_by_date, x="Date", y="Amount", title="Daily Expense Flow")
+            # st.plotly_chart(line_chart, use_container_width=True)
+
+        st.markdown("### 🔍 Category-wise Summary")
+        grouped = df_data.groupby(["Type", "Category"])["Amount"].sum().reset_index()
+        st.dataframe(grouped)
+    else:
+        st.info("Add data to see detailed reports.")
+
