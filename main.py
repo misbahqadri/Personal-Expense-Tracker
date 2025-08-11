@@ -31,10 +31,10 @@ with st.sidebar:
     # Quick actions
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("➕ Quick Add", use_container_width=True,type="primary"):
+        if st.button("➕ Quick Add", use_container_width=True,type="tertiary"):
             st.switch_page("add_expense.py")
     with col2:
-        if st.button("📊 Reports", use_container_width=True,type="primary"):
+        if st.button("📊 Reports", use_container_width=True,type="tertiary"):
             st.switch_page("report.py")
 
     st.markdown("---")
