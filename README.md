@@ -195,7 +195,7 @@ The modular structure makes it easy to add new features:
 
 - **Documentation**: Check the Guidelines page in the app
 - **Issues**: Report bugs through GitHub issues
-- **Email**: Contact developer at xyz@gmail.com
+- **Email**: Contact developer at misbahqadri@gmail.com
 
 ## 📄 License
 
