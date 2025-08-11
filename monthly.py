@@ -1,17 +1,23 @@
 # monthly.py
 import streamlit as st
 import pandas as pd
+import os 
+from datetime import datetime, timedelta
 
 st.title("📅 Monthly Overview")
 
 
 # ---------- CSV FILE SETUP ----------
-csv_file = "add_expense.csv"
+csv_file = os.path.join("data", "add_expense.csv")
 
 # Load data from CSV or create a new DataFrame
 def load_data():
     try:
-        return pd.read_csv(csv_file, parse_dates=["Date"])
+        df = pd.read_csv(csv_file)
+        df["Date"] = pd.to_datetime(df["Date"], errors="coerce")  # force datetime conversion
+        df = df.dropna(subset=["Date"])  # remove invalid date rows
+        return df
+        # return pd.read_csv(csv_file, parse_dates=["Date"])
     except FileNotFoundError:
         return pd.DataFrame(columns=["Date", "Type", "Amount", "Category", "Description"])
 
@@ -19,12 +25,16 @@ def save_data(df):
     df.to_csv(csv_file, index=False)
 
 df_data = load_data()
-
-if not df_data.empty:
-    st.text("No transactions")
-
+df_data = df_data.dropna(subset=["Date"]) 
+# if not df_data.empty:
+#     st.text("No transactions")
+if df_data.empty or "Date" not in df_data:
+    st.warning("No data available")
+    st.stop()
 
 # ----------- SELECT YEAR ------------
+df_data["Date"] = pd.to_datetime(df_data["Date"], errors="coerce")
+
 years_available = df_data["Date"].dt.year.unique()
 selected_year = st.selectbox("📅 Select Year for Monthly Summary", sorted(years_available, reverse=True))
 

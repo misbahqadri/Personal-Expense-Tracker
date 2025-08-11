@@ -2,16 +2,22 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import os 
 
 st.title("📈 Reports & Analytics")
 
 
 # ---------- CSV FILE SETUP ----------
-csv_file = "add_expense.csv"
+csv_file = os.path.join("data", "add_expense.csv")
 # Load data from CSV or create a new DataFrame
 def load_data():
     try:
-        return pd.read_csv(csv_file, parse_dates=["Date"])
+        df = pd.read_csv(csv_file)
+        df["Date"] = pd.to_datetime(df["Date"], errors="coerce")  # force datetime conversion
+        df = df.dropna(subset=["Date"])  # remove invalid date rows
+        return df
+
+        # return pd.read_csv(csv_file, parse_dates=["Date"])
     except FileNotFoundError:
         return pd.DataFrame(columns=["Date", "Type", "Amount", "Category", "Description"])
 
@@ -49,7 +55,7 @@ with tab1:
         
         # --- Monthly Summary ---
     st.subheader(f"📌 Summary ")
-    st.markdown(f"👋 Hello Lisa! Here's your financial summary for **{selected_month} {selected_year}**.")
+    st.markdown(f"👋 Hello Misbah ! Here's your financial summary for **{selected_month} {selected_year}**.")
 
 
     income_month = filtered_df[filtered_df["Type"] == "Income"]["Amount"].sum()
@@ -74,10 +80,12 @@ with tab1:
         st.warning("No data available for this month.")
     else:
         # PIE CHART
-        
+
         pie_data = filtered_df[filtered_df["Type"] == "Expense"].groupby("Category")["Amount"].sum().reset_index()
         fig_pie = px.pie(pie_data, names="Category", values="Amount", title="Expenses by Category")
         st.plotly_chart(fig_pie, use_container_width=True)
+
+        
 
         # LINE CHART
         line_data = filtered_df.groupby("Date")["Amount"].sum().reset_index()
