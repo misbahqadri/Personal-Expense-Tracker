@@ -110,7 +110,6 @@ with tab2:
             else:
                 # Convert datetime to date only and hide index
                 display_data = filtered_data.copy()
-                display_data['date_column'] = pd.to_datetime(display_data['date_column'])
                 display_data["Date"] = display_data["Date"].dt.date
                 # Simple inline edit/delete controls
                 st.dataframe(display_data, use_container_width=True, hide_index=True)
