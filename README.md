@@ -195,12 +195,8 @@ The modular structure makes it easy to add new features:
 
 - **Documentation**: Check the Guidelines page in the app
 - **Issues**: Report bugs through GitHub issues
-- **Email**: Contact developer at misbahqadri@gmail.com
-
-## 📄 License
-
-This project is open source and available under the MIT License.
-
+- **Email**: Contact developer at misbahqad983@gmail.com
+- 
 ## 🙏 Acknowledgments
 
 - Built with [Streamlit](https://streamlit.io)
@@ -210,4 +206,4 @@ This project is open source and available under the MIT License.
 ---
 
 **Happy Financial Tracking! 💰**
-"# Personal-Finance-Tracker" 
+"# Personal-Finance-Tracker" by Misbah Qadri 
