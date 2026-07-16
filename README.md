@@ -22,10 +22,10 @@ A personal finance management application built using **Python, Streamlit, Panda
 ![Yearly Summary](screenshots/08_yearly-summary.png)
 
 ### 💳 Budget Overview
-![Budget Overview](screenshots/11_budget-overview.png)
+![Budget Overview](screenshots/09_budget-overview.png)
 
 ### 🎯 Financial Goals
-![Financial Goals](screenshots/10_goals-progress.png)
+![Financial Goals](screenshots/11_goals-progress.png)
 
 ---
 
