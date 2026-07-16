@@ -6,26 +6,7 @@ A personal finance management application built using **Python, Streamlit, Panda
 
 ## 📷 Project Preview
 
-### 🏠 Home Dashboard
 ![Home Dashboard](screenshots/01_home-dashboard.png)
-
-### ➕ Add Transaction
-![Add Transaction](screenshots/03_add-transaction.png)
-
-### 📊 Reports & Analytics
-![Reports & Analytics](screenshots/06_reports-analytics.png)
-
-### 📅 Monthly Overview
-![Monthly Overview](screenshots/07_monthly-overview.png)
-
-### 📈 Yearly Summary
-![Yearly Summary](screenshots/08_yearly-summary.png)
-
-### 💳 Budget Overview
-![Budget Overview](screenshots/09_budget-overview.png)
-
-### 🎯 Financial Goals
-![Financial Goals](screenshots/11_goals-progress.png)
 
 ---
 
